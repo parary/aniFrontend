@@ -1,0 +1,4 @@
+# ignore git push at npm
+node_modules
+*.log
+*.gz

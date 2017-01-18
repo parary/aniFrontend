@@ -1,0 +1,12 @@
+{
+    "name": "AniGodGrabberNode",
+    "version": "1.0.0",
+    "description": "anigod grabber nodejs version",
+    "main": "AniGodGrabberNode.js",
+    "dependencies": {
+        "express": ">=4.0.0",
+        "unirest": "0.5.1",
+        "cheerio": "0.22.0",
+        "bluebird": "3.4.7"
+    }
+}
