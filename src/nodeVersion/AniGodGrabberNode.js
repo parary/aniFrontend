@@ -126,14 +126,11 @@ function getEpisodeUrl(episodeUrl) {
             let key = 'var videoID';
             let startIndex = htmlStr.indexOf(key);
             let endIndex = htmlStr.indexOf( ';', startIndex);
-            let unTrimVideoId = htmlStr.substring( startIndex + key.length, endIndex);
+            let unTrimVideoId = htmlStr.substring( startIndex + key.length, endIndex - 1);
             let trimIndex = unTrimVideoId.indexOf("'");
-            let videoId = unTrimVideoId.substr(trimIndex);
-            videoId = videoId.replace( '\\/', '%2F' );
-            videoId = videoId.replace( '\\x2b', '%2B' );
-
-            let currentTimeMillis = new Date().getTime();
-            let videoUrl = BASE_URL + '/video?id=' + videoId + '&ts=' + currentTimeMillis;
+            let videoId = unTrimVideoId.substr(trimIndex + 1);
+            let currentTimeMillis = Date.now();
+            let videoUrl = BASE_URL + '/video?id=' + encodeURIComponent(videoId) + '&ts=' + currentTimeMillis;
             console.log( 'execute ' + videoUrl);
             resolve(videoUrl);
         });
