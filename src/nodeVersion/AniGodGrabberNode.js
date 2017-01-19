@@ -129,17 +129,16 @@ function getEpisodeUrl(episodeUrl) {
             let unTrimVideoId = htmlStr.substring( startIndex + key.length, endIndex - 1);
             let trimIndex = unTrimVideoId.indexOf("'");
             let videoId = unTrimVideoId.substr(trimIndex + 1);
-
             console.log('ori hash: ' + videoId);
             console.log('\n\n');
-            console.log('encode hash: ' + encodeURIComponent(videoId));
-            console.log('\n\n');
 
-            videoId = videoId.replace("\\/", "%2F" );
-            videoId = videoId.replace("\\x2b", "%2B");
+            videoId = videoId.replace(/\\\//g, "%2F" );
+            videoId = videoId.replace(/\\x2b/g, "%2B");
+            videoId = videoId.replace(/=/g, "%3D");
+
             let currentTimeMillis = Date.now();
             let videoUrl = BASE_URL + '/video?id=' + videoId + '&ts=' + currentTimeMillis;
-            console.log( 'execute ' + videoUrl);
+            console.log('execute: ' + videoId);
             resolve(videoUrl);
         });
     });
