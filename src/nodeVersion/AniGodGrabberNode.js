@@ -4,11 +4,21 @@ var unirest = require('unirest');
 var express = require('express');
 var app = express();
 var BASE_URL = 'https://anigod.com';
-var SERVER_PORT = 3000;
+var SERVER_PORT = 8080;
+var LOG = true;
+
+// util
+function log(logStr) {
+    if (LOG) {
+        console.log(logStr);
+    }
+}
 
 // logic codes
 function getAniList() {
+    log('getAniList() is called');
     return new Promise(function(resolve, reject) {
+        log('usnirest.get(' + BASE_URL + ') is called');
         unirest.get(BASE_URL)
         .headers({
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'
@@ -22,6 +32,7 @@ function getAniList() {
 
             // unirest request success check
             if (res.error) {
+                log('res.body: ' + res.body);
                 reject(res.error);
             }
 
@@ -132,9 +143,9 @@ function getEpisodeUrl(episodeUrl) {
             console.log('ori hash: ' + videoId);
             console.log('\n\n');
 
-            videoId = videoId.replace(/\\\//g, "%2F" );
-            videoId = videoId.replace(/\\x2b/g, "%2B");
-            videoId = videoId.replace(/=/g, "%3D");
+            videoId = videoId.replace(/\\\//g, "%2F" );  // `\/`   to `%2F`
+            videoId = videoId.replace(/\\x2b/g, "%2B");  // `\x2b` to `%2B`
+            videoId = videoId.replace(/=/g, "%3D");      // `=`    to `%3D`
 
             let currentTimeMillis = Date.now();
             let videoUrl = BASE_URL + '/video?id=' + videoId + '&ts=' + currentTimeMillis;
@@ -188,8 +199,10 @@ app.get('/getAniSeries', function (req, res) {
 });
 
 app.get('/getAniList', function (req, res) {
+    log('/getAniList is called');
+
     function success(result) {
-        res.send(result);
+        res.status(200).json(result);
     }
 
     function reject(err) {
@@ -201,5 +214,16 @@ app.get('/getAniList', function (req, res) {
         .catch(reject);
 });
 
-app.listen(SERVER_PORT);
-console.log('server start success, port: ' + SERVER_PORT);
+app.get('/test', function (req, res) {
+    log('/test is called');
+    res.status(200).json({
+        'test': 'test success'
+    });
+});
+
+// server start code
+app.set('port', (process.env.PORT || SERVER_PORT));
+var server = app.listen(app.get('port'), function () {
+    var port = server.address().port;
+    console.log('server start success, port: ' + port);
+});
