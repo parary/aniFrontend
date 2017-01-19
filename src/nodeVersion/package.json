@@ -2,11 +2,11 @@
     "name": "AniGodGrabberNode",
     "version": "1.0.0",
     "description": "anigod grabber nodejs version",
-    "main": "AniGodGrabberNode.js",
+    "main": "app.js",
     "scripts": {
-        "start": "node AniGodGrabberNode.js",
-        "monitor": "nodemon AniGodGrabberNode.js",
-        "deploy": "gcloud app deploy AniGodGrabberNode.yaml"
+        "start": "node app.js",
+        "monitor": "nodemon app.js",
+        "deploy": "gcloud app deploy app.yaml"
     },
     "engines": {
         "node": "6.9.4"
