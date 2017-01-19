@@ -4,7 +4,9 @@
     "description": "anigod grabber nodejs version",
     "main": "AniGodGrabberNode.js",
     "scripts": {
-        "start": "node AniGodGrabberNode.js"
+        "start": "node AniGodGrabberNode.js",
+        "monitor": "nodemon AniGodGrabberNode.js",
+        "deploy": "gcloud app deploy AniGodGrabberNode.yaml"
     },
     "engines": {
         "node": "6.9.4"
