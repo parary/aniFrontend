@@ -132,9 +132,9 @@ function getEpisodeUrl(episodeUrl) {
             console.log('ori hash: ' + videoId);
             console.log('\n\n');
 
-            videoId = videoId.replace(/\\\//g, "%2F" );
-            videoId = videoId.replace(/\\x2b/g, "%2B");
-            videoId = videoId.replace(/=/g, "%3D");
+            videoId = videoId.replace(/\\\//g, "%2F" );  // `\/`   to `%2F`
+            videoId = videoId.replace(/\\x2b/g, "%2B");  // `\x2b` to `%2B`
+            videoId = videoId.replace(/=/g, "%3D");      // `=`    to `%3D`
 
             let currentTimeMillis = Date.now();
             let videoUrl = BASE_URL + '/video?id=' + videoId + '&ts=' + currentTimeMillis;
