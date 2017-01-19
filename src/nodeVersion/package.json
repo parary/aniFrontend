@@ -3,6 +3,12 @@
     "version": "1.0.0",
     "description": "anigod grabber nodejs version",
     "main": "AniGodGrabberNode.js",
+    "scripts": {
+        "start": "node AniGodGrabberNode.js"
+    },
+    "engines": {
+        "node": "6.9.4"
+    },
     "dependencies": {
         "express": ">=4.0.0",
         "unirest": "0.5.1",
