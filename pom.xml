@@ -1,48 +1,52 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com</groupId>
-	<artifactId>alabout</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<groupId>AnigodGrabber</groupId>
+	<artifactId>AnigodGrabber</artifactId>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<properties>
+		<appengine.sdk.version>1.9.48</appengine.sdk.version>
+		<appengine.app.version>1</appengine.app.version>
+
+		<project.http.version>1.19.0</project.http.version>
+		<project.oauth.version>1.19.0</project.oauth.version>
+
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
+	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.8.3</version>
 		</dependency>
-		
+
 		<!-- json -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.4</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>4.1.0.RELEASE</version>
-		</dependency>
-		
-		<dependency>
-	<groupId>org.quartz-scheduler</groupId>
-	<artifactId>quartz</artifactId>
-	<version>2.2.1</version>
-</dependency>
-		
 	</dependencies>
-
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -52,6 +56,11 @@
 					<warSourceDirectory>WebContent</warSourceDirectory>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.appengine</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>${appengine.sdk.version}</version>
 			</plugin>
 		</plugins>
 	</build>
