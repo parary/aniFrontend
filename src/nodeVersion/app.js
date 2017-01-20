@@ -2,8 +2,11 @@ var Promise = require("bluebird");
 var cheerio = require('cheerio');
 var unirest = require('unirest');
 var express = require('express');
+var https = require('https');
+var spawn = require('child_process').spawn;
 var app = express();
 var BASE_URL = 'https://anigod.com';
+var USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36';
 var SERVER_PORT = 8080;
 var LOG = true;
 
@@ -75,6 +78,52 @@ function getAniList() {
             resolve(aniList);
         });
     });
+}
+
+function getList(htmlStr) {
+    log('getAniList() is called');
+    let $ = cheerio.load(htmlStr);
+    let rows = $('div.index-table-container');
+    let weekIdx = 1;
+    let aniList = {};
+
+    rows.each(function() {
+        let row = this;
+        let h2 = $(row).find('h2');
+        log(h2.text());
+
+        let itemsOfDay = $(row).find('tbody tr');
+        let itemIdx = 1;
+        itemsOfDay.each(function () {
+            let item = this;
+            let weekItem = {};
+
+            if (item.tagName === 'tr') {
+                // mon ~ sun
+                if ($(item).attr('itemtype') || $(item).attr('itemscope') === '') {
+                    weekItem['name'] = $(item).find('meta[itemprop=name]').attr('content');
+                    weekItem['thumbnailUrl'] = $(item).find('meta[itemprop=thumbnailUrl]').attr('content');
+                    weekItem['url'] = $(item).find('meta[itemprop=url]').attr('content');
+                } else {
+                // complete
+                    let $aTag = $(item).find('a[class=index-image-container]');
+                    let $imgTag = $($aTag).find('img');
+
+                    weekItem['name'] = $aTag.attr('title');
+                    weekItem['thumbnailUrl'] = $imgTag.attr('src');
+                    weekItem['url'] = $aTag.attr('href');
+                }
+
+                let key = weekIdx.toString() + itemIdx.toString();
+                log('\tID : ' + key + " " + weekItem.name);
+                aniList[key] = weekItem;
+                itemIdx++;
+            }
+        });
+        weekIdx++;
+    });
+
+    return aniList;
 }
 
 function getAniSeries(aniUrl) {
@@ -212,6 +261,61 @@ app.get('/getAniList', function (req, res) {
     getAniList()
         .then(success)
         .catch(reject);
+});
+
+app.get('/getList', function (req, res) {
+    log('/getList is called');
+
+    https.get(BASE_URL, (innerRes) => {
+        log('node https called');
+        log('statusCode: ' + innerRes.statusCode);
+
+        const statusCode = innerRes.statusCode;
+        if (statusCode !== 200) {
+            res.status(statusCode).send({
+                error: 'Request Failed.\nStatus Code: ' + statusCode
+            });
+        } else {
+            let rawData = '';
+            innerRes.on('data', (chunk) => rawData += chunk);
+            innerRes.on('end', () => {
+                log('inner call success');
+                log('data >>> ' + rawData);
+                let list = getList(rawData);
+                res.status(statusCode).json(list);
+            });
+        }
+    }).on('error', (e) => {
+        log(e.message);
+        res.status(500).send({ error: e.message });
+    });
+});
+
+app.get('/curl', (req, res) => {
+    log('/curl is called.');
+
+    try {
+        let child = spawn('curl', ['--max-time', '60', BASE_URL]);
+        let rawData = '';
+        child.stdout.on('data', (chunk) => rawData += chunk);
+        child.stdout.on('end', () => {
+            log('node curl spawn call success');
+            log('data >>> ' + rawData);
+            let list = getList(rawData);
+            res.status(200).json(list);
+        });
+        child.on('exit', (code) => {
+            if (code !== 0) {
+                res.status(500).send({
+                    error: 'Failed, node curl spawn. exit code > ' + code
+                });
+            }
+        });
+    } catch (e) {
+        res.status(500).send({
+            error: 'Failed, node curl spawn. > ' + e.message
+        });
+    }
 });
 
 app.get('/test', function (req, res) {
