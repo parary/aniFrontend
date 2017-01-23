@@ -1,20 +1,24 @@
 {
-    "name": "AniGodGrabberNode",
-    "version": "1.0.0",
-    "description": "anigod grabber nodejs version",
-    "main": "app.js",
-    "scripts": {
-        "start": "node app.js",
-        "monitor": "nodemon app.js",
-        "deploy": "gcloud app deploy app.yaml"
-    },
-    "engines": {
-        "node": "6.9.4"
-    },
-    "dependencies": {
-        "express": ">=4.0.0",
-        "unirest": "0.5.1",
-        "cheerio": "0.22.0",
-        "bluebird": "3.4.7"
-    }
+  "name": "AniGodGrabberNode",
+  "version": "1.0.0",
+  "description": "anigod grabber nodejs version",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main",
+    "server": "node app.js",
+    "monitor": "nodemon app.js",
+    "deploy": "gcloud app deploy app.yaml"
+  },
+  "engines": {
+    "node": "6.9.4"
+  },
+  "dependencies": {
+    "express": ">=4.0.0",
+    "unirest": "0.5.1",
+    "cheerio": "0.22.0",
+    "bluebird": "3.4.7"
+  },
+  "devDependencies": {
+    "electron": "^1.4.15"
+  }
 }
