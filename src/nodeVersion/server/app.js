@@ -1,5 +1,5 @@
 let rest = require('./rest/rest');
-let view = require('./view/index');
+let view = require('./views/view');
 let log = require('./util/util').log;
 let config = require('../config');
 let express = require('express');
@@ -8,6 +8,7 @@ let app = express();
 ////// routing codes
 // routing view
 app.get('/', view.getIndex);
+app.get('/browser.js', view.getBrowserJs);
 
 // routing rest api
 app.get('/getEpisodeUrl', rest.getEpisodeUrl);
