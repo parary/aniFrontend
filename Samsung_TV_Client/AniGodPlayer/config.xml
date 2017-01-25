@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.samsung.com/">  
+ <widgetname>AniGodPlayer</widgetname>
+	<ver>1</ver>
+	<fullwidget>y</fullwidget>
+	<srcctl>y</srcctl>
+	<ticker>n</ticker>
+	<childlock>n</childlock>
+	<audiomute>n</audiomute>
+	<videomute>n</videomute>
+	<dcont>y</dcont>
+	<type>user</type>
+	<movie>y</movie>
+	<category>Videos</category>
+	<description>SmartTV Player for AniGod</description>
+	<width>1920</width>
+	<height>1080</height>
+	<ThumbIcon>images/icon_movie.png</ThumbIcon>
+	<BigThumbIcon>images/icon_movie.png</BigThumbIcon>
+	<ListIcon>images/icon_movie.png</ListIcon>
+	<BigListIcon>images/icon_movie.png</BigListIcon>
+	<author>
+		<name>parary</name>
+		<email>parary@gmail.com</email>
+		<link>http://parary.dlinkddns.com</link>
+		<organization>parary</organization>
+	</author>
+<autoUpdate>n</autoUpdate>
+</widget>

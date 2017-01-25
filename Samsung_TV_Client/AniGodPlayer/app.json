@@ -1,0 +1,11 @@
+{
+ "changeSource": true,
+ "scenes": [
+  "Main",
+  "Sub",
+  "Player"
+ ],
+ "files": [],
+ "theme": "base",
+ "modules": ["ime"]
+}

@@ -2,7 +2,9 @@ package parary.anipia;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,10 +76,30 @@ public class AniGodGrabberServlet extends HttpServlet {
 		String videoId = fullHtml.substring( startIdx + key.length(), endIdx ).replace( "\\/", "%2F" ).replace( "\\x2b", "%2B" ).replace( "=", "%3d" );
 
 		String videoUrl = BASE_URL + "/video?id=" + videoId + "&ts=" + System.currentTimeMillis();
-		//		System.out.println( "execute " + videoUrl );
-		//		java.awt.Desktop.getDesktop().browse( new URI( videoUrl ) );
 
-		return videoUrl;
+		URL url = new URL( videoUrl );
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestProperty( "User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36" );
+		con.setRequestProperty( "referer", "http://viid.me/qpvAPr?utm_source=anigod.gryfindor.com&utm_medium=QL&utm_name=1" );
+		con.setInstanceFollowRedirects( false );
+		con.connect();
+
+		String rediretorUrl = con.getHeaderField( "Location" );
+		url = new URL( rediretorUrl );
+		con.disconnect();
+		return rediretorUrl;
+//		con = (HttpURLConnection) url.openConnection();
+//		con.setInstanceFollowRedirects( false );
+//		con.connect();
+//
+//		String streamUrl = con.getHeaderField( "Location" );
+//
+//		con.disconnect();
+		//
+		//		if ( streamUrl != null )
+		//			return streamUrl;
+		//		else
+		//			return rediretorUrl;
 	}
 
 	private ArrayList<Map<String, String>> getAniSeries( String aniUrl ) throws IOException {
@@ -89,7 +111,7 @@ public class AniGodGrabberServlet extends HttpServlet {
 		Document doc = connction.get();
 		Elements rows = doc.select( "[itemtype=http://schema.org/TVEpisode]" );
 
-		int seriesId = 1;
+		//		int seriesId = 1;
 
 		for ( int i = 0; i < rows.size(); i++ ) {
 			Element container = rows.get( i );
@@ -97,6 +119,7 @@ public class AniGodGrabberServlet extends HttpServlet {
 			seriesItem.put( "name", container.childNode( 1 ).childNode( 1 ).attr( "content" ) );
 			seriesItem.put( "description", container.childNode( 1 ).childNode( 3 ).attr( "content" ) );
 			seriesItem.put( "url", container.childNode( 1 ).childNode( 5 ).attr( "content" ) );
+			seriesItem.put( "thumbnailUrl", container.childNode( 1 ).childNode( 7 ).attr( "content" ) );
 			Elements links = container.select( ".table-link" );
 			if ( links.size() > 0 ) {
 				seriesItem.put( "real", links.attr( "href" ) );
@@ -105,7 +128,7 @@ public class AniGodGrabberServlet extends HttpServlet {
 			
 			//			result.put( String.valueOf( seriesId ), seriesItem );
 			result.add( seriesItem );
-			seriesId++;
+			//			seriesId++;
 		}
 
 		return result;
@@ -115,7 +138,7 @@ public class AniGodGrabberServlet extends HttpServlet {
 		
 		ArrayList<Map<String, String>> result = new ArrayList<>();
 		
-		int weekIdx = 1;
+		//		int weekIdx = 1;
 		Connection connction = Jsoup.connect( BASE_URL );
 		connction.header( "User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36" );
 		Document doc = connction.get();
@@ -129,7 +152,7 @@ public class AniGodGrabberServlet extends HttpServlet {
 			//			System.out.println( weekDay );
 
 			List<Node> itemsOfDay = container.child( 1 ).child( 1 ).childNodes();
-			int itemIdx = 1;
+			//			int itemIdx = 1;
 			for ( int j = 0; j < itemsOfDay.size(); j++ ) {
 				Node item = itemsOfDay.get( j );
 
@@ -149,15 +172,15 @@ public class AniGodGrabberServlet extends HttpServlet {
 					weekItem.put( "url", item.childNode( 0 ).attr( "href" ) );
 				}
 
-				String key = String.valueOf(weekIdx) + String.valueOf(itemIdx);
+				//				String key = String.valueOf(weekIdx) + String.valueOf(itemIdx);
 
 				//				System.out.println( "\tID : " + key + " " + weekItem.get( "name" ) );
 				weekItem.put( "weekOfDay", weekOfDay );
 				//				result.put( key, weekItem );
 				result.add( weekItem );
-				itemIdx++;
+				//				itemIdx++;
 			}
-			weekIdx++;
+			//			weekIdx++;
 		}
 		return result;
 	}
