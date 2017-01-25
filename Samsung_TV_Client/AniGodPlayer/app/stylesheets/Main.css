@@ -1,0 +1,213 @@
+#SceneMain {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 1920px;
+	height: 1080px;
+	background: #000;
+	color: #fff;
+}
+
+#SceneMain .title {
+	display: block;
+	position: absolute;
+	font-size: 60px;
+	top: 20px;
+	left: 20px;
+	margin: 0;
+	padding: 0;
+}
+
+#list {
+	position: absolute;
+	top: 85px;
+	left: 10px;
+	width: 1920px;
+	height: 968px;
+}
+
+.list {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.list li {
+	display: block;
+	float: left;
+	position: relative;
+	width: 900px;
+	height: 125px;
+	background: #333;
+	margin: 10px;
+	padding: 10px;
+	border-top: 1px solid #666;
+	border-left: 1px solid #666;
+}
+
+.list .icon {
+	margin-left: -0px;
+	margin-top: -0px;
+	float: left;
+	width: 110px;
+	height: 125px;
+}
+
+.list .details {
+	float: left;
+	margin-left: 20px;
+	width: 770px;
+}
+
+.list .focused {
+	background: #666;
+	border-top: 1px solid #999;
+	border-left: 1px solid #999;
+}
+
+.focused .focused {
+	background: #09f;
+	border-top: 1px solid #3cf;
+	border-left: 1px solid #3cf;
+}
+
+.list .name {
+	font-size: 30px;
+	margin: 0;
+	padding: 0;
+}
+
+.list .program {
+	display: block;
+	font-size: 30px;
+	margin: 0;
+	padding: 0;
+	color: #aaa;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 820px;
+}
+
+.list .focused .program {
+	color: #cef;
+}
+
+.list .progress {
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	height: 5px;
+	background: #666;
+}
+
+.list .focused .progress {
+	background: #6cf;
+}
+
+.loading .scrollbar {
+	display: none;
+}
+
+.scrollbar {
+	position: absolute;
+	left: 10px;
+	right: 10px;
+	bottom: 10px;
+	height: 25px;
+	background: #222;
+}
+
+.scrollbar .bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 23px;
+	background: #666;
+	border-left: 1px solid #999;
+	border-top: 1px solid #999;
+}
+
+#list .error {
+	font-size: 18px;
+	position: absolute;
+	top: 800px;
+	left: 0;
+	width: 1920px;
+	margin-top: -8px;
+	text-align: center;
+	display: none;
+	color: #e00;
+}
+
+#info {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1920px;
+	height: 50px;
+	display: none;
+}
+
+#info .overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1920px;
+	height: 1080px;
+	background: rgba(0, 0, 0, 0.75);
+}
+
+#info .info-box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 559px;
+	padding: 20px;
+	margin-left: -300px;
+	background: #333;
+	border-top: 1px solid #666;
+	border-left: 1px solid #666;
+}
+
+.info-box .logo {
+	float: right;
+}
+
+.info-box .program-title {
+	margin: 0;
+	padding: 0;
+}
+
+.info-box .summary {
+	font-size: 0.875em;
+	color: #aaa;
+	margin-top: 0;
+}
+
+.info-box .description {
+	color: #aaa;
+	text-align: justify;
+}
+
+.info-box .channel-name {
+	font-size: 50px;
+	margin-top: 0;
+}
+
+.info-box .next {
+	margin-top: 0;
+	margin-bottom: 2px;
+}
+
+.info-box .next span {
+	font-size: 0.875em;
+	color: #aaa;
+}
+
+.sf-ui-keyhelp {
+	border-top: 1px solid #666;
+	background: #333;
+}

@@ -1,8 +1,10 @@
 package parary.anipia;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +23,9 @@ public class AniGodGrabber {
 	private static Scanner		scan;
 
 	public static void main( String[] args ) throws IOException, URISyntaxException {
-		scan = new Scanner( System.in );
-		getWeekComnmand( getAniList() );
+		//		scan = new Scanner( System.in );
+		//		getWeekComnmand( getAniList() );
+
 	}
 
 	private static void getWeekComnmand( HashMap<String, Map<String, String>> weekAniMap ) throws IOException, URISyntaxException {
@@ -79,8 +82,19 @@ public class AniGodGrabber {
 		String videoId = fullHtml.substring( startIdx + key.length(), endIdx ).replace( "\\/", "%2F" ).replace( "\\x2b", "%2B" );
 
 		String videoUrl = BASE_URL + "/video?id=" + videoId + "&ts=" + System.currentTimeMillis();
-		System.out.println( "execute " + videoUrl );
-		java.awt.Desktop.getDesktop().browse( new URI( videoUrl ) );
+
+		URL url = new URL( videoUrl );
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestProperty( "User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36" );
+		con.setRequestProperty( "referer", "http://viid.me/qpvAPr?utm_source=anigod.gryfindor.com&utm_medium=QL&utm_name=1" );
+		con.setInstanceFollowRedirects( false );
+		con.connect();
+
+		String streamUrl = con.getHeaderField( "Location" );
+
+		con.disconnect();
+
+		java.awt.Desktop.getDesktop().browse( new URI( streamUrl ) );
 	}
 
 	private static HashMap<String, Map<String, String>> getAniSeries( String aniUrl ) throws IOException {
