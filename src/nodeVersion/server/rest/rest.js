@@ -43,7 +43,6 @@ function _getAniList(htmlStr) {
                     //// url이 완벽하지 않은 경우, 처리 하지 않음
                     //// e.g) 완결 애니매이션, 랭킹, tv, 추천게시판
                     let itemUrl = $aTag.attr('href');
-                    console.log('test..!!!' + itemUrl);
                     if (itemUrl && itemUrl.indexOf(BASE_URL) > 0) {
                         weekItem['name'] = $aTag.attr('title');
                         weekItem['thumbnailUrl'] = $imgTag.attr('src');

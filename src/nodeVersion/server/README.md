@@ -78,3 +78,4 @@ node-inspector
 >    - 주의: node버전이 높으면 에러 발생하고 정상 동작 하지 않을 수 있음
 >            https://github.com/node-inspector/node-inspector/issues/905
 >    - 대체 방법: node --inspect AniGodGrabberNode.js 명령어 사용해서 chrome으로 디버깅
+>    - node --inspect --debug-brk server/app.js

@@ -24,6 +24,7 @@
     "node-jsx": "^0.13.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-google-recaptcha": "^0.5.4",
     "unirest": "0.5.1"
   },
   "devDependencies": {

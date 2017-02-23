@@ -2,6 +2,8 @@ let React = require('react'),
     unirest = require('unirest'),
     url = require('url');
 
+let ReCAPTCHA = require('react-google-recaptcha');
+
 let Tab = React.createClass({
     propTypes: {
         tab: React.PropTypes.shape({
@@ -62,10 +64,70 @@ let Item = React.createClass({
 });
 
 let Video = React.createClass({
+    decrypt: function (k, encoded) {
+        var decoded = forge.util.decode64(encoded);
+        var buffer = forge.util.createBuffer(decoded);
+
+        var key = forge.util.createBuffer(k, 'utf8');
+        var iv = forge.util.createBuffer();
+        var ciphertext = forge.util.createBuffer();
+
+        for (var i = 0; i < 16; i++) iv.putByte(buffer.getByte(i));
+        for (var i = 0, len = buffer.length(); i < len; i++) ciphertext.putByte(buffer.getByte(i));
+
+        var cipher = forge.aes.createDecryptionCipher(key, 'CFB');
+        cipher.start(iv);
+        cipher.update(ciphertext);
+        cipher.finish();
+
+        return cipher.output.getBytes();
+    },
+
+    loadVideo: function (k, t, v) {
+        var token = decrypt(k, t);
+        document.cookie = 'token=' + token + ';path=/video';
+
+        var videoID = v;
+        var element = document.getElementById('video-source');
+        if (!element) return;
+        var video = element.parentNode;
+
+        if (element.src) return;
+
+        element.setAttribute('src', '/video?id=' + encodeURIComponent(videoID) + '&ts=' + Date.now());
+
+        video.load();
+    },
+
+    onChangeReCAPTCHA: function (response) {
+        if (!response || response.length == 0) return;
+
+        var url = '/episode';
+        var data = {
+            'episode_id': 34149,
+            'recaptcha': response,
+        };
+
+        ajax.post(url, null, null, data, function (response) {
+            if (!response.data) return;
+
+            var data = response.data;
+            var key = data.key;
+            var token = data.token;
+            var videoID = data.encrypted;
+
+            loadVideo(key, token, videoID);
+        });
+    },
     render: function () {
         if (this.props.url) {
             return (
                 <div id='videoPane'>
+                    <ReCAPTCHA 
+                        ref="recaptcha"
+                        sitekey="6LfSMhYUAAAAAC26GZySBIvtL9Z2Po6Ff8BZMOa7"
+                        onChange={this.onChangeReCAPTCHA}
+                    />
                     <video id="video" controls>
                         <source src={this.props.url} />
                     </video>
@@ -73,7 +135,13 @@ let Video = React.createClass({
             );
         } else {
             return (
-                <div id='videoPane'></div>
+                <div id='videoPane'>
+                    <ReCAPTCHA 
+                        ref="recaptcha"
+                        sitekey="6LfSMhYUAAAAAC26GZySBIvtL9Z2Po6Ff8BZMOa7"
+                        onChange={this.onChangeReCAPTCHA}
+                    />
+                </div>
             );
         }
     }
