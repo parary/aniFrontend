@@ -17,7 +17,7 @@ app.get('/getAniList', rest.getAniList);
 
 // test and prevent (404)
 app.get('/img/anigod.png', function (req, res) {
-    res.sendfile('./src/nodeVersion/server/resource/anigod.png');
+    res.sendfile('./server/resource/anigod.png');
 });
 app.get('/test', function (req, res) {
     log('/test is called');

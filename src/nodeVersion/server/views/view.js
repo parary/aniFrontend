@@ -1,6 +1,7 @@
 let React          = require('react'),
     ReactDOMServer = require('react-dom/server'),
     fs             = require('fs'),
+    pathUtil       = require('path'),
     browserify     = require('browserify'),
     babelify       = require('babelify'),
     Handlebars     = require('handlebars'),
@@ -8,11 +9,11 @@ let React          = require('react'),
 jsx.install();
 
 let Root = React.createFactory(require('./components/root'));
-let viewsPath = './src/nodeVersion/server/views';
+let viewsPath = './server/views';
 
 let getIndex = (req, res) => {
     console.log('getIndex');
-    let path = viewsPath + '/index.hbs';
+    let path = pathUtil.join(viewsPath, 'index.hbs');
     let template = Handlebars.compile(fs.readFileSync(path).toString());
     let reactHtml = ReactDOMServer.renderToString(Root());
 

@@ -63,10 +63,10 @@ $ node AniGodGrabberNode.js
 nodemon
 >    - 설명: 서버 코드 수정후 save하면 서버 자동 restart해주는 tool
 >    - 설치: npm install -g nodemon
->    - 사용: nodemon AniGodGrabberNode.js
->            -- nodemon --debug AniGodGrabberNode.js  디버그 모드로 실행시 (5858) port
->            -- nodemon --debug=7000 AniGodGrabberNode.js  디버그 모드로 실행시 (7000) port
->            -- nodemon --debug-brk AniGodGrabberNode.js  디버그 모드로 실행 + 실행하자마자 첫라인 breakpoint
+>    - 사용: nodemon app.js
+>            -- nodemon --debug app.js  디버그 모드로 실행시 (5858) port
+>            -- nodemon --debug=7000 app.js  디버그 모드로 실행시 (7000) port
+>            -- nodemon --debug-brk app.js  디버그 모드로 실행 + 실행하자마자 첫라인 breakpoint
 
 node-inspector
 >    - 설명: 서버코드를 chrome의 inspector도구를 이용해서 debug할 수 있게 해주는 툴
