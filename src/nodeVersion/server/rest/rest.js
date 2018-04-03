@@ -2,6 +2,7 @@
 let Promise = require('bluebird');
 let cheerio = require('cheerio');
 let unirest = require('unirest');
+let path = require('path');
 let log = require('../util/util').log;
 
 // load config
@@ -10,7 +11,7 @@ let BASE_URL = config.base_url;
 let USER_AGENT = config.user_agent;
 
 function _getAniList(htmlStr) {
-    log('getAniList() is called');
+    log('_getAniList() is called');
     let $ = cheerio.load(htmlStr);
     let rows = $('div.index-table-container');
     let weekIdx = 1;
@@ -38,15 +39,23 @@ function _getAniList(htmlStr) {
                     let $aTag = $(item).find('a[class=index-image-container]');
                     let $imgTag = $($aTag).find('img');
 
-                    weekItem['name'] = $aTag.attr('title');
-                    weekItem['thumbnailUrl'] = $imgTag.attr('src');
-                    weekItem['url'] = $aTag.attr('href');
+                    //// special handle
+                    //// url이 완벽하지 않은 경우, 처리 하지 않음
+                    //// e.g) 완결 애니매이션, 랭킹, tv, 추천게시판
+                    let itemUrl = $aTag.attr('href');
+                    if (itemUrl && itemUrl.indexOf(BASE_URL) > 0) {
+                        weekItem['name'] = $aTag.attr('title');
+                        weekItem['thumbnailUrl'] = $imgTag.attr('src');
+                        weekItem['url'] = $aTag.attr('href');
+                    }
                 }
 
-                let key = weekIdx.toString() + itemIdx.toString();
-                log('\tID : ' + key + " " + weekItem.name);
-                aniList[key] = weekItem;
-                itemIdx++;
+                if (weekItem && weekItem.url) {
+                    let key = weekIdx.toString() + itemIdx.toString();
+                    log('\tID : ' + key + " " + weekItem.name);
+                    aniList[key] = weekItem;
+                    itemIdx++;
+                }
             }
         });
         weekIdx++;
